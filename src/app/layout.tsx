@@ -24,7 +24,9 @@ export const metadata: Metadata = {
     default: "Getsoft",
     template: "%s · Getsoft",
   },
-  icons: {},
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+  },
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
@@ -37,15 +39,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <head>
-        <link
-          id="site-favicon"
-          rel="icon"
-          type="image/svg+xml"
-          href="/favicon-dark.svg?v=5"
-        />
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('getsoft-theme');if(t!=='dark'&&t!=='light'){t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}if(t==='dark'){document.documentElement.setAttribute('data-theme','dark')}else{document.documentElement.removeAttribute('data-theme')}document.querySelectorAll("link[rel='icon'],link[rel='shortcut icon']").forEach(function(n){if(n.id!=='site-favicon')n.remove()});var icon=document.getElementById('site-favicon');if(icon){icon.href=t==='dark'?'/favicon-dark.svg?v=5':'/favicon-light.svg?v=5'}}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('getsoft-theme');if(t!=='dark'&&t!=='light'){t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}if(t==='dark'){document.documentElement.setAttribute('data-theme','dark')}else{document.documentElement.removeAttribute('data-theme')}}catch(e){}})();`,
           }}
         />
       </head>

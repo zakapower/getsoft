@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   placeholder: string;
@@ -17,14 +17,21 @@ export function SearchBox({
   const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
 
-  function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  useEffect(() => {
     const q = query.trim();
-    router.push(q ? `${actionPath}?q=${encodeURIComponent(q)}` : actionPath);
-  }
+    const href = q ? `${actionPath}?q=${encodeURIComponent(q)}` : actionPath;
+    const timer = window.setTimeout(() => {
+      router.replace(href, { scroll: false });
+    }, 180);
+    return () => window.clearTimeout(timer);
+  }, [query, actionPath, router]);
 
   return (
-    <form className="search" onSubmit={onSubmit} role="search">
+    <form
+      className="search"
+      onSubmit={(e) => e.preventDefault()}
+      role="search"
+    >
       <label className="sr-only" htmlFor="app-search">
         {placeholder}
       </label>

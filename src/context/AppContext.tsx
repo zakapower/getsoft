@@ -50,13 +50,6 @@ function applyTheme(theme: Theme) {
   } catch {
     /* ignore */
   }
-  const icon = document.getElementById(
-    "site-favicon",
-  ) as HTMLLinkElement | null;
-  if (icon) {
-    icon.href =
-      theme === "dark" ? "/favicon-dark.svg?v=5" : "/favicon-light.svg?v=5";
-  }
 }
 
 function writeLangCookie(lang: Lang) {

@@ -365,7 +365,7 @@
   }
 
   .site-menu {
-    display: block;
+    display: none;
     order: 4;
     position: absolute;
     top: calc(0.75rem + 2.35rem + 0.7rem);
@@ -378,6 +378,10 @@
     border-radius: 0.85rem;
     background: var(--surface);
     box-shadow: 0 12px 28px rgb(0 0 0 / 0.35);
+  }
+
+  .site-header--menu-open .site-menu {
+    display: block;
   }
 
   .site-header--menu-open {

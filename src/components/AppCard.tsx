@@ -1,22 +1,25 @@
+"use client";
+
 import { Download } from "lucide-react";
 import type { AppEntry } from "@/data/apps";
-import type { Dictionary } from "@/i18n/dictionaries";
 import { AppIcon } from "./AppIcon";
+import { useApp } from "@/context/AppContext";
+import { getDictionary } from "@/i18n/dictionaries";
 
 type Props = {
   app: AppEntry;
-  dict: Dictionary;
 };
 
-export function AppCard({ app, dict }: Props) {
+export function AppCard({ app }: Props) {
+  const { lang } = useApp();
+  const dict = getDictionary(lang);
+
   return (
-    <article className="app-row">
+    <article className="app-card">
       <AppIcon app={app} />
-      <div className="app-row__body">
-        <span className="app-row__name">{app.name}</span>
-      </div>
+      <h2 className="app-card__name">{app.name}</h2>
       <a
-        className="btn btn--sm"
+        className="btn btn--sm app-card__btn"
         href={app.officialUrl}
         target="_blank"
         rel="noopener noreferrer"

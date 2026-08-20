@@ -25,7 +25,7 @@ export function CatalogChrome({ children }: { children: React.ReactNode }) {
           <h1 className="page__title">{dict.brand}</h1>
           <p className="page__lead">{dict.tagline}</p>
           <SearchBox
-            key={`${actionPath}?${q}`}
+            key={actionPath}
             placeholder={dict.searchPlaceholder}
             initialQuery={q}
             actionPath={actionPath}
