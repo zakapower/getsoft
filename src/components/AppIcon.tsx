@@ -1,7 +1,7 @@
 import type { AppEntry } from "@/data/apps";
 
 /** Monochrome logos stored as white; inverted in light theme. */
-const MONO_ICONS = new Set(["7zip", "steam", "epic", "obs"]);
+const MONO_ICONS = new Set(["7zip", "steam", "epic", "obs", "cursor", "windhawk"]);
 
 type Props = {
   app: AppEntry;

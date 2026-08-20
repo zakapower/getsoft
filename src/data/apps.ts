@@ -145,6 +145,14 @@ export const apps: AppEntry[] = [
     officialUrl: "https://www.qbittorrent.org/download",
   },
   {
+    slug: "cursor",
+    name: "Cursor",
+    category: "developer",
+    publisher: "Anysphere",
+    officialUrl: "https://cursor.com/download",
+    featured: true,
+  },
+  {
     slug: "vscode",
     name: "Visual Studio Code",
     category: "developer",
@@ -241,6 +249,34 @@ export const apps: AppEntry[] = [
     category: "utilities",
     publisher: "AnyDesk Software",
     officialUrl: "https://anydesk.com/en/downloads/windows",
+  },
+  {
+    slug: "geekuninstaller",
+    name: "Geek Uninstaller",
+    category: "utilities",
+    publisher: "Thomas Koen",
+    officialUrl: "https://geekuninstaller.com/download",
+  },
+  {
+    slug: "cloudflare",
+    name: "Cloudflare",
+    category: "utilities",
+    publisher: "Cloudflare",
+    officialUrl: "https://1.1.1.1/",
+  },
+  {
+    slug: "windhawk",
+    name: "Windhawk",
+    category: "utilities",
+    publisher: "Ramen Software",
+    officialUrl: "https://windhawk.net/",
+  },
+  {
+    slug: "v2raytun",
+    name: "v2RayTun",
+    category: "utilities",
+    publisher: "LXST-CODE",
+    officialUrl: "https://v2raytun.com/",
   },
 ];
 
