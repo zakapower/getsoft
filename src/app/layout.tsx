@@ -24,7 +24,6 @@ export const metadata: Metadata = {
     default: "Getsoft",
     template: "%s · Getsoft",
   },
-  description: "Official Windows app downloads in one place",
   icons: {},
 };
 
