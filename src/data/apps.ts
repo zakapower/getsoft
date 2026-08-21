@@ -55,6 +55,13 @@ export const apps: AppEntry[] = [
     officialUrl: "https://www.opera.com/download",
   },
   {
+    slug: "operagx",
+    name: "Opera GX",
+    category: "browsers",
+    publisher: "Opera Software",
+    officialUrl: "https://www.opera.com/gx",
+  },
+  {
     slug: "discord",
     name: "Discord",
     category: "communication",
@@ -76,6 +83,13 @@ export const apps: AppEntry[] = [
     category: "communication",
     publisher: "Meta",
     officialUrl: "https://www.whatsapp.com/download",
+  },
+  {
+    slug: "teamspeak",
+    name: "TeamSpeak",
+    category: "communication",
+    publisher: "TeamSpeak Systems",
+    officialUrl: "https://www.teamspeak.com/en/downloads/",
   },
   {
     slug: "vlc",

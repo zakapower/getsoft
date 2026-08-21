@@ -1,30 +1,60 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Props = {
   placeholder: string;
   initialQuery?: string;
   actionPath?: string;
+  extraQuery?: Record<string, string>;
 };
+
+function buildHref(
+  actionPath: string,
+  extraQuery: Record<string, string>,
+  query: string,
+) {
+  const params = new URLSearchParams(extraQuery);
+  const q = query.trim();
+  if (q) params.set("q", q);
+  else params.delete("q");
+  const s = params.toString();
+  return s ? `${actionPath}?${s}` : actionPath;
+}
 
 export function SearchBox({
   placeholder,
   initialQuery = "",
   actionPath = "/",
+  extraQuery = {},
 }: Props) {
   const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
+  const extraKey = useMemo(
+    () =>
+      Object.keys(extraQuery)
+        .sort()
+        .map((k) => `${k}=${extraQuery[k]}`)
+        .join("&"),
+    [extraQuery],
+  );
 
   useEffect(() => {
-    const q = query.trim();
-    const href = q ? `${actionPath}?q=${encodeURIComponent(q)}` : actionPath;
+    const extras = Object.fromEntries(
+      extraKey
+        ? extraKey.split("&").map((pair) => {
+            const i = pair.indexOf("=");
+            return [pair.slice(0, i), pair.slice(i + 1)];
+          })
+        : [],
+    );
+    const href = buildHref(actionPath, extras, query);
     const timer = window.setTimeout(() => {
       router.replace(href, { scroll: false });
     }, 180);
     return () => window.clearTimeout(timer);
-  }, [query, actionPath, router]);
+  }, [query, actionPath, extraKey, router]);
 
   return (
     <form

@@ -4,6 +4,7 @@ import { DocumentTitle } from "@/components/DocumentTitle";
 import { Header } from "@/components/Header";
 import { OverlayScrollbar } from "@/components/OverlayScrollbar";
 import { AppProvider } from "@/context/AppContext";
+import { FavoritesProvider } from "@/context/FavoritesContext";
 import { getRequestLang } from "@/lib/request-lang";
 import "./globals.css";
 
@@ -47,12 +48,14 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body>
         <AppProvider initialLang={lang}>
-          <DocumentTitle />
-          <OverlayScrollbar />
-          <div className="app-shell">
-            <Header />
-            <main>{children}</main>
-          </div>
+          <FavoritesProvider>
+            <DocumentTitle />
+            <OverlayScrollbar />
+            <div className="app-shell">
+              <Header />
+              <main>{children}</main>
+            </div>
+          </FavoritesProvider>
         </AppProvider>
       </body>
     </html>

@@ -1,4 +1,4 @@
-import { AppCard } from "@/components/AppCard";
+import { AppGrid } from "@/components/AppGrid";
 import { apps, searchApps } from "@/data/apps";
 
 export default async function HomePage({
@@ -9,11 +9,5 @@ export default async function HomePage({
   const { q = "" } = await searchParams;
   const list = q ? searchApps(q) : apps;
 
-  return (
-    <div className="app-list" key={q || "all"}>
-      {list.map((app) => (
-        <AppCard key={app.slug} app={app} />
-      ))}
-    </div>
-  );
+  return <AppGrid apps={list} listKey={q || "all"} />;
 }

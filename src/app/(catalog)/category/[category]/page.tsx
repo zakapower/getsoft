@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { AppCard } from "@/components/AppCard";
+import { AppGrid } from "@/components/AppGrid";
 import { getAppsByCategory, searchApps } from "@/data/apps";
 import { categoryIds, type CategoryId } from "@/data/categories";
 
@@ -25,11 +25,5 @@ export default async function CategoryPage({
     ? searchApps(q).filter((app) => app.category === category)
     : inCategory;
 
-  return (
-    <div className="app-list" key={`${category}:${q}`}>
-      {list.map((app) => (
-        <AppCard key={app.slug} app={app} />
-      ))}
-    </div>
-  );
+  return <AppGrid apps={list} listKey={`${category}:${q}`} />;
 }
