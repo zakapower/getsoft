@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
+import { ArrowDownAZ, Check, Clock3, Layers } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { useApp } from "@/context/AppContext";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -15,6 +15,12 @@ function labelFor(id: SortId, dict: ReturnType<typeof getDictionary>) {
   if (id === "name") return dict.sortName;
   if (id === "category") return dict.sortCategory;
   return dict.sortRecent;
+}
+
+function IconFor({ id }: { id: SortId }) {
+  if (id === "name") return <ArrowDownAZ className="sort-menu__icon" strokeWidth={2.25} aria-hidden />;
+  if (id === "category") return <Layers className="sort-menu__icon" strokeWidth={2.25} aria-hidden />;
+  return <Clock3 className="sort-menu__icon" strokeWidth={2.25} aria-hidden />;
 }
 
 export function SortMenu({ value, onChange }: Props) {
@@ -53,6 +59,8 @@ export function SortMenu({ value, onChange }: Props) {
     };
   }, [open]);
 
+  const currentLabel = labelFor(value, dict);
+
   return (
     <div className={`sort-menu${open ? " is-open" : ""}`} ref={rootRef}>
       <button
@@ -61,11 +69,11 @@ export function SortMenu({ value, onChange }: Props) {
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listId}
-        aria-label={dict.sortLabel}
+        aria-label={`${dict.sortLabel}: ${currentLabel}`}
+        title={`${dict.sortLabel}: ${currentLabel}`}
         onClick={() => setOpen((v) => !v)}
       >
-        <span className="sort-menu__value">{labelFor(value, dict)}</span>
-        <ChevronDown className="sort-menu__chevron" strokeWidth={2.25} aria-hidden />
+        <IconFor id={value} />
       </button>
       <ul
         id={listId}
@@ -95,7 +103,10 @@ export function SortMenu({ value, onChange }: Props) {
                   setOpen(false);
                 }}
               >
-                {labelFor(id, dict)}
+                <span className="sort-menu__option-label">{labelFor(id, dict)}</span>
+                {active ? (
+                  <Check className="sort-menu__check" strokeWidth={2.5} aria-hidden />
+                ) : null}
               </button>
             </li>
           );

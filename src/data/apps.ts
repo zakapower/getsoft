@@ -117,7 +117,7 @@ export const apps: AppEntry[] = [
   {
     slug: "blender",
     name: "Blender",
-    category: "media",
+    category: "developer",
     publisher: "Blender Foundation",
     officialUrl: "https://www.blender.org/download/",
   },

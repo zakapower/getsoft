@@ -17,7 +17,7 @@ type Props = {
 export function AppCard({ app, exitOnUnfavorite = false }: Props) {
   const { lang, t } = useApp();
   const dict = getDictionary(lang);
-  const { isFavorite, toggleFavorite } = useFavorites();
+  const { favorites, isFavorite, toggleFavorite } = useFavorites();
   const favorited = isFavorite(app.slug);
   const [popping, setPopping] = useState(false);
   const [leaving, setLeaving] = useState(false);
@@ -25,7 +25,7 @@ export function AppCard({ app, exitOnUnfavorite = false }: Props) {
 
   useEffect(() => {
     if (!leaving) return;
-    const timer = window.setTimeout(() => finishLeave(), 520);
+    const timer = window.setTimeout(() => finishLeave(), 280);
     return () => window.clearTimeout(timer);
   }, [leaving]);
 
@@ -38,6 +38,11 @@ export function AppCard({ app, exitOnUnfavorite = false }: Props) {
   function onToggle() {
     if (favorited && exitOnUnfavorite) {
       if (leaving) return;
+      // Last item: leave favorites view immediately
+      if (favorites.size <= 1) {
+        toggleFavorite(app.slug);
+        return;
+      }
       setLeaving(true);
       return;
     }

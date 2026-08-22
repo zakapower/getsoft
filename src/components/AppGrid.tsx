@@ -25,10 +25,7 @@ export function AppGrid({ apps, listKey }: Props) {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("fav");
     const s = params.toString();
-    const t = window.setTimeout(() => {
-      router.replace(s ? `/?${s}` : "/");
-    }, 520);
-    return () => window.clearTimeout(t);
+    router.replace(s ? `/?${s}` : "/");
   }, [ready, favOnly, favorites.size, router, searchParams]);
 
   const list = useMemo(() => {

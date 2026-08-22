@@ -19,6 +19,6 @@ export const categoryLabels: Record<
   communication: { ru: "Связь", en: "Communication" },
   media: { ru: "Медиа", en: "Media" },
   utilities: { ru: "Утилиты", en: "Utilities" },
-  developer: { ru: "Для разработчиков", en: "Developer" },
+  developer: { ru: "Разработка", en: "Development" },
   gaming: { ru: "Игры", en: "Gaming" },
 };

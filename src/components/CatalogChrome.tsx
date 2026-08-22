@@ -1,5 +1,6 @@
 "use client";
 
+import { Bookmark } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -23,26 +24,26 @@ export function CatalogChrome({ children }: { children: React.ReactNode }) {
   const sort = parseSort(searchParams.get("sort"));
   const hasFavorites = favorites.size > 0;
 
-  const [favChip, setFavChip] = useState(false);
-  const [favChipLeaving, setFavChipLeaving] = useState(false);
+  const [favBtn, setFavBtn] = useState(false);
+  const [favBtnLeaving, setFavBtnLeaving] = useState(false);
 
   useEffect(() => {
-    if (hasFavorites) {
-      setFavChip(true);
-      setFavChipLeaving(false);
+    if (hasFavorites || favView) {
+      setFavBtn(true);
+      setFavBtnLeaving(false);
       return;
     }
-    if (favChip) setFavChipLeaving(true);
-  }, [hasFavorites, favChip]);
+    if (favBtn) setFavBtnLeaving(true);
+  }, [hasFavorites, favView, favBtn]);
 
   useEffect(() => {
-    if (!favChipLeaving) return;
+    if (!favBtnLeaving) return;
     const timer = window.setTimeout(() => {
-      setFavChip(false);
-      setFavChipLeaving(false);
-    }, 520);
+      setFavBtn(false);
+      setFavBtnLeaving(false);
+    }, 220);
     return () => window.clearTimeout(timer);
-  }, [favChipLeaving]);
+  }, [favBtnLeaving]);
 
   const categoryMatch = pathname.match(/\/category\/([^/]+)/);
   const activeCategory = categoryMatch?.[1] ?? null;
@@ -70,6 +71,18 @@ export function CatalogChrome({ children }: { children: React.ReactNode }) {
 
   const allHref = hrefWith("/", { fav: null });
   const favoritesHref = hrefWith("/", { fav: "1" });
+  const favActive = !activeCategory && favView;
+  const favToggleHref = favActive ? allHref : favoritesHref;
+
+  useEffect(() => {
+    const active = document.querySelector(".filters a.is-on");
+    if (!(active instanceof HTMLElement)) return;
+    active.scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "nearest",
+    });
+  }, [activeCategory]);
 
   function onSortChange(next: SortId) {
     const params = new URLSearchParams(searchParams.toString());
@@ -101,20 +114,6 @@ export function CatalogChrome({ children }: { children: React.ReactNode }) {
               >
                 {dict.categoriesAll}
               </Link>
-              {favChip ? (
-                <Link
-                  href={favoritesHref}
-                  className={`filters__fav${favChipLeaving ? " is-leaving" : ""}${!activeCategory && favView ? " is-on" : ""}`}
-                  scroll={false}
-                  onAnimationEnd={() => {
-                    if (!favChipLeaving) return;
-                    setFavChip(false);
-                    setFavChipLeaving(false);
-                  }}
-                >
-                  {dict.favorites}
-                </Link>
-              ) : null}
               {categoryIds.map((id) => (
                 <Link
                   key={id}
@@ -126,7 +125,31 @@ export function CatalogChrome({ children }: { children: React.ReactNode }) {
                 </Link>
               ))}
             </nav>
-            <SortMenu value={sort} onChange={onSortChange} />
+            <div className="catalog-toolbar__actions">
+              {favBtn ? (
+                <Link
+                  href={favToggleHref}
+                  className={`catalog-action catalog-action--fav${favBtnLeaving ? " is-leaving" : ""}${favActive ? " is-on" : ""}`}
+                  scroll={false}
+                  aria-label={dict.favorites}
+                  title={dict.favorites}
+                  aria-pressed={favActive}
+                  onAnimationEnd={() => {
+                    if (!favBtnLeaving) return;
+                    setFavBtn(false);
+                    setFavBtnLeaving(false);
+                  }}
+                >
+                  <Bookmark
+                    className="catalog-action__icon"
+                    strokeWidth={2.25}
+                    fill={favActive ? "currentColor" : "none"}
+                    aria-hidden
+                  />
+                </Link>
+              ) : null}
+              <SortMenu value={sort} onChange={onSortChange} />
+            </div>
           </div>
         </div>
 

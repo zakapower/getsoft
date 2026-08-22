@@ -90,6 +90,7 @@ main {
 
 .wrap {
   width: min(100%, var(--max));
+  min-width: 0;
   margin-inline: auto;
   padding-inline: max(1rem, env(safe-area-inset-left, 0px))
     max(1rem, env(safe-area-inset-right, 0px));
@@ -211,7 +212,14 @@ main {
   text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+}
+
+.page__intro--center .page__title,
+.page__intro--center .page__lead {
+  align-self: center;
 }
 
 .page__intro--center .page__lead {
@@ -219,13 +227,41 @@ main {
   margin-right: auto;
 }
 
+.page__intro--center .search {
+  width: 100%;
+  max-width: 36rem;
+  align-self: center;
+}
+
 .section {
   margin-bottom: 2.25rem;
+}
+
+.catalog-toolbar {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .catalog-toolbar .filters {
   margin-top: 1.1rem;
   margin-bottom: 0;
+  min-width: 0;
+  width: 100%;
+}
+
+@media (max-width: 719px) {
+  .catalog-toolbar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.55rem;
+  }
+
+  .catalog-toolbar__actions {
+    align-self: flex-end;
+    margin-top: 0;
+  }
 }
 
 @media (min-width: 720px) {
@@ -241,44 +277,101 @@ main {
     margin-top: 1.25rem;
   }
 
-  .catalog-toolbar .sort-menu {
+  .catalog-toolbar__actions {
     grid-column: 3;
     justify-self: end;
     margin-top: 1.25rem;
   }
 }
 
+.catalog-toolbar__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.catalog-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 0.4rem;
+  background: var(--surface);
+  color: var(--muted);
+  text-decoration: none;
+  transition:
+    color 0.22s ease,
+    border-color 0.22s ease,
+    background-color 0.22s ease;
+}
+
+.catalog-action:hover {
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+}
+
+.catalog-action.is-on {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
+
+.catalog-action:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.catalog-action__icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  display: block;
+}
+
+.catalog-action--fav {
+  animation: favorites-action-in 0.28s cubic-bezier(0.33, 1, 0.32, 1) both;
+}
+
+.catalog-action--fav.is-leaving {
+  animation: favorites-action-out 0.22s cubic-bezier(0.33, 1, 0.32, 1) both;
+  pointer-events: none;
+}
+
 .sort-menu {
   position: relative;
   z-index: 5;
-  min-width: 11.5rem;
+  flex-shrink: 0;
 }
 
 .sort-menu__trigger {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  width: 100%;
-  min-height: 2.35rem;
-  padding: 0.45rem 0.75rem;
+  justify-content: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  padding: 0;
   border: 1px solid var(--line);
-  border-radius: 0.65rem;
+  border-radius: 0.4rem;
   background: var(--surface);
   box-shadow: none;
-  color: var(--ink);
-  font: inherit;
-  font-size: 0.85rem;
-  font-weight: 600;
+  color: var(--muted);
   cursor: pointer;
   transition:
+    color 0.22s ease,
     border-color 0.22s ease,
-    box-shadow 0.22s ease,
     background-color 0.22s ease;
 }
 
 .sort-menu__trigger:hover {
-  border-color: color-mix(in srgb, var(--ink) 28%, var(--line));
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+}
+
+.sort-menu.is-open .sort-menu__trigger {
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
 }
 
 .sort-menu__trigger:focus-visible {
@@ -286,28 +379,18 @@ main {
   outline-offset: 2px;
 }
 
-.sort-menu__value {
-  text-align: start;
-  white-space: nowrap;
-}
-
-.sort-menu__chevron {
-  width: 1rem;
-  height: 1rem;
-  flex-shrink: 0;
-  color: var(--muted);
-  transition: transform 0.28s cubic-bezier(0.33, 1, 0.32, 1);
-}
-
-.sort-menu.is-open .sort-menu__chevron {
-  transform: rotate(180deg);
+.sort-menu__icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  display: block;
 }
 
 .sort-menu__list {
   position: absolute;
   top: calc(100% + 0.35rem);
-  left: 0;
   right: 0;
+  left: auto;
+  min-width: 12rem;
   margin: 0;
   padding: 0.35rem;
   list-style: none;
@@ -315,7 +398,7 @@ main {
   border-radius: 0.65rem;
   background: var(--surface);
   box-shadow: none;
-  transform-origin: top center;
+  transform-origin: top right;
   animation: sort-menu-in 0.28s cubic-bezier(0.33, 1, 0.32, 1) both;
 }
 
@@ -337,6 +420,8 @@ main {
 .sort-menu__option {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
   width: 100%;
   min-height: 2.15rem;
   margin: 0;
@@ -355,6 +440,17 @@ main {
     color 0.18s ease;
 }
 
+.sort-menu__option-label {
+  min-width: 0;
+}
+
+.sort-menu__check {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
 .sort-menu__option:focus,
 .sort-menu__option:focus-visible {
   outline: none;
@@ -363,7 +459,7 @@ main {
 
 .sort-menu__option.is-active {
   background: transparent;
-  color: var(--ink);
+  color: var(--accent);
 }
 
 .sort-menu__option.is-hover {
@@ -371,11 +467,13 @@ main {
   color: var(--on-accent);
 }
 
+.sort-menu__option.is-hover .sort-menu__check {
+  color: var(--on-accent);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .sort-menu__list,
-  .sort-menu__chevron {
+  .sort-menu__list {
     animation: none;
-    transition: none;
   }
 }
 
@@ -384,8 +482,11 @@ main {
   flex-wrap: nowrap;
   gap: 0.4rem;
   margin: 1.25rem 0 0.5rem;
+  width: 100%;
+  min-width: 0;
   max-width: 100%;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   padding-bottom: 0.15rem;
@@ -452,7 +553,7 @@ main {
   color: var(--on-accent);
 }
 
-@keyframes favorites-chip-in {
+@keyframes favorites-action-in {
   from {
     opacity: 0;
     transform: scale(0.94) translateY(3px);
@@ -463,16 +564,7 @@ main {
   }
 }
 
-.filters__fav {
-  animation: favorites-chip-in 0.55s cubic-bezier(0.33, 1, 0.32, 1) both;
-}
-
-.filters__fav.is-leaving {
-  animation: favorites-chip-out 0.5s cubic-bezier(0.33, 1, 0.32, 1) both;
-  pointer-events: none;
-}
-
-@keyframes favorites-chip-out {
+@keyframes favorites-action-out {
   from {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -508,8 +600,8 @@ main {
 
 @media (prefers-reduced-motion: reduce) {
   .app-list .app-card,
-  .filters__fav,
-  .filters__fav.is-leaving,
+  .catalog-action--fav,
+  .catalog-action--fav.is-leaving,
   .app-card.is-leaving,
   .app-card__fav.is-pop .app-card__fav-icon {
     animation: none;
@@ -564,7 +656,7 @@ main {
 }
 
 .app-card.is-leaving {
-  animation: app-card-out 0.5s cubic-bezier(0.33, 1, 0.32, 1) both;
+  animation: app-card-out 0.28s cubic-bezier(0.33, 1, 0.32, 1) both;
   pointer-events: none;
 }
 
@@ -575,7 +667,7 @@ main {
   }
   to {
     opacity: 0;
-    transform: scale(0.96) translateY(8px);
+    transform: scale(0.97) translateY(6px);
   }
 }
 

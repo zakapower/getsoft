@@ -285,6 +285,7 @@
     align-items: center;
     column-gap: 0.55rem;
     row-gap: 0.7rem;
+    position: relative;
     z-index: 46;
     padding: 0.75rem max(var(--gutter), env(safe-area-inset-right, 0px)) 0
       max(var(--gutter), env(safe-area-inset-left, 0px));
@@ -293,12 +294,16 @@
   .brand {
     order: 1;
     justify-self: auto;
+    position: relative;
+    z-index: 50;
   }
 
   .site-controls {
     order: 2;
     margin-left: auto;
     justify-self: auto;
+    position: relative;
+    z-index: 50;
   }
 
   .ctrl.site-controls__burger {
@@ -326,6 +331,8 @@
     gap: 0;
     justify-content: stretch;
     justify-self: auto;
+    position: relative;
+    z-index: 50;
     border-top: 1px solid var(--line);
   }
 
