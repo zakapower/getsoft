@@ -74,16 +74,6 @@ export function CatalogChrome({ children }: { children: React.ReactNode }) {
   const favActive = !activeCategory && favView;
   const favToggleHref = favActive ? allHref : favoritesHref;
 
-  useEffect(() => {
-    const active = document.querySelector(".filters a.is-on");
-    if (!(active instanceof HTMLElement)) return;
-    active.scrollIntoView({
-      behavior: "smooth",
-      inline: "center",
-      block: "nearest",
-    });
-  }, [activeCategory]);
-
   function onSortChange(next: SortId) {
     const params = new URLSearchParams(searchParams.toString());
     if (next === "name") params.delete("sort");

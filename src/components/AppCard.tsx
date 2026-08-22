@@ -38,7 +38,6 @@ export function AppCard({ app, exitOnUnfavorite = false }: Props) {
   function onToggle() {
     if (favorited && exitOnUnfavorite) {
       if (leaving) return;
-      // Last item: leave favorites view immediately
       if (favorites.size <= 1) {
         toggleFavorite(app.slug);
         return;
@@ -59,39 +58,41 @@ export function AppCard({ app, exitOnUnfavorite = false }: Props) {
         if (leaving) finishLeave();
       }}
     >
-      <button
-        type="button"
-        className={`app-card__fav${favorited || leaving ? " is-on" : ""}${popping ? " is-pop" : ""}`}
-        onClick={onToggle}
-        onAnimationEnd={(e) => {
-          e.stopPropagation();
-          setPopping(false);
-        }}
-        aria-pressed={favorited && !leaving}
-        aria-label={
-          favorited
-            ? t("Убрать из избранного", "Remove from favorites")
-            : t("В избранное", "Add to favorites")
-        }
-      >
-        <Bookmark
-          className="app-card__fav-icon"
-          strokeWidth={2.25}
-          fill={favorited || leaving ? "currentColor" : "none"}
-          aria-hidden
-        />
-      </button>
       <AppIcon app={app} />
       <h2 className="app-card__name">{app.name}</h2>
-      <a
-        className="btn btn--sm app-card__btn"
-        href={app.officialUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Download className="btn__icon" strokeWidth={2.25} aria-hidden />
-        {dict.download}
-      </a>
+      <div className="app-card__end">
+        <a
+          className="btn btn--sm app-card__btn"
+          href={app.officialUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Download className="btn__icon" strokeWidth={2.25} aria-hidden />
+          {dict.download}
+        </a>
+        <button
+          type="button"
+          className={`app-card__fav${favorited || leaving ? " is-on" : ""}${popping ? " is-pop" : ""}`}
+          onClick={onToggle}
+          onAnimationEnd={(e) => {
+            e.stopPropagation();
+            setPopping(false);
+          }}
+          aria-pressed={favorited && !leaving}
+          aria-label={
+            favorited
+              ? t("Убрать из избранного", "Remove from favorites")
+              : t("В избранное", "Add to favorites")
+          }
+        >
+          <Bookmark
+            className="app-card__fav-icon"
+            strokeWidth={2.25}
+            fill={favorited || leaving ? "currentColor" : "none"}
+            aria-hidden
+          />
+        </button>
+      </div>
     </article>
   );
 }

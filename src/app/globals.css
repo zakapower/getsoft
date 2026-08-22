@@ -250,20 +250,33 @@ main {
   width: 100%;
 }
 
+.catalog-toolbar__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+/* Mobile: filters and actions on separate rows */
 @media (max-width: 719px) {
   .catalog-toolbar {
     display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 0.55rem;
+    margin-top: 1.1rem;
+  }
+
+  .catalog-toolbar .filters {
+    margin-top: 0;
   }
 
   .catalog-toolbar__actions {
     align-self: flex-end;
-    margin-top: 0;
   }
 }
 
+/* Desktop: filters centered, actions on the right — same row */
 @media (min-width: 720px) {
   .catalog-toolbar {
     display: grid;
@@ -282,13 +295,6 @@ main {
     justify-self: end;
     margin-top: 1.25rem;
   }
-}
-
-.catalog-toolbar__actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  flex-shrink: 0;
 }
 
 .catalog-action {
@@ -449,6 +455,13 @@ main {
   height: 1rem;
   flex-shrink: 0;
   color: var(--accent);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.sort-menu__check.is-on {
+  opacity: 1;
+  visibility: visible;
 }
 
 .sort-menu__option:focus,
@@ -545,7 +558,7 @@ main {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--on-accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+  box-shadow: none;
 }
 
 .filters a.is-on:hover,
@@ -615,12 +628,6 @@ main {
   grid-template-columns: 1fr;
 }
 
-@media (min-width: 420px) {
-  .app-list {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (min-width: 720px) {
   .app-list {
     gap: 0.75rem;
@@ -672,10 +679,6 @@ main {
 }
 
 .app-card__fav {
-  position: absolute;
-  top: 0.45rem;
-  right: 0.45rem;
-  z-index: 1;
   width: 2rem;
   height: 2rem;
   display: inline-flex;
@@ -688,6 +691,15 @@ main {
   color: var(--muted);
   cursor: pointer;
   transition: color 0.28s ease, background-color 0.28s ease;
+}
+
+.app-card__end {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  margin-top: auto;
 }
 
 .app-card__fav:hover {
@@ -717,6 +729,18 @@ main {
   .app-card {
     gap: 0.75rem;
     padding: 1.15rem 0.9rem 0.95rem;
+  }
+
+  .app-card__fav {
+    position: absolute;
+    top: 0.45rem;
+    right: 0.45rem;
+    z-index: 1;
+  }
+
+  .app-card__end {
+    display: block;
+    width: 100%;
   }
 }
 
@@ -798,22 +822,22 @@ main {
 .app-card__btn {
   width: 100%;
   justify-content: center;
-  margin-top: auto;
 }
 
-@media (max-width: 419px) {
+@media (max-width: 719px) {
   .app-card {
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
     text-align: start;
     gap: 0.65rem 0.75rem;
-    padding: 0.85rem 2.4rem 0.85rem 0.9rem;
+    padding: 0.85rem 0.9rem;
   }
 
   .app-card .app-row__icon {
     width: 2.6rem;
     height: 2.6rem;
+    flex-shrink: 0;
   }
 
   .app-card__name {
@@ -823,9 +847,24 @@ main {
     text-align: start;
   }
 
-  .app-card__btn {
+  .app-card__end {
     width: auto;
+    flex-shrink: 0;
     margin-top: 0;
     margin-left: auto;
+  }
+
+  .app-card__btn {
+    width: auto;
+    flex-shrink: 0;
+    margin-top: 0;
+  }
+
+  .app-card__fav {
+    flex-shrink: 0;
+    width: 2.35rem;
+    height: 2.35rem;
+    border: 1px solid var(--line);
+    background: var(--surface);
   }
 }

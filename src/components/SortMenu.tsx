@@ -104,9 +104,11 @@ export function SortMenu({ value, onChange }: Props) {
                 }}
               >
                 <span className="sort-menu__option-label">{labelFor(id, dict)}</span>
-                {active ? (
-                  <Check className="sort-menu__check" strokeWidth={2.5} aria-hidden />
-                ) : null}
+                <Check
+                  className={`sort-menu__check${active ? " is-on" : ""}`}
+                  strokeWidth={2.5}
+                  aria-hidden
+                />
               </button>
             </li>
           );

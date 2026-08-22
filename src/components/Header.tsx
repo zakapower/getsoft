@@ -18,6 +18,13 @@ export function Header() {
   const menuId = useId();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  function navClass(href: string, end = false) {
+    const active = end
+      ? pathname === href
+      : pathname === href || pathname.startsWith(`${href}/`);
+    return active ? "active" : undefined;
+  }
+
   useEffect(() => {
     setMenuOpen(false);
   }, [pathname]);
@@ -34,13 +41,6 @@ export function Header() {
       document.documentElement.classList.remove("menu-open");
     };
   }, [menuOpen]);
-
-  function navClass(href: string, end = false) {
-    const active = end
-      ? pathname === href
-      : pathname === href || pathname.startsWith(`${href}/`);
-    return active ? "active" : undefined;
-  }
 
   const toolControls = (
     <>
@@ -128,51 +128,75 @@ export function Header() {
           </div>
 
           {menuOpen ? (
-            <button
-              type="button"
-              className="site-menu__backdrop"
-              aria-label={t("Закрыть меню", "Close menu")}
-              onClick={() => setMenuOpen(false)}
-            />
-          ) : null}
-
-          <div
-            id={menuId}
-            className="site-menu"
-            hidden={!menuOpen}
-            role="dialog"
-            aria-modal="true"
-          >
-            <div className="site-menu__actions">
-              <button
-                type="button"
-                className="site-menu__action"
-                onClick={toggleLang}
-              >
-                <span className="site-menu__action-badge" aria-hidden>
-                  {lang === "ru" ? "EN" : "RU"}
-                </span>
-                <span>{lang === "ru" ? "English" : "Русский"}</span>
-              </button>
-              <a
-                className="site-menu__action"
-                href={GITHUB_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <SiGithub
-                  className="site-menu__action-icon"
-                  color="currentColor"
-                  size={18}
-                  title=""
-                  aria-hidden
-                />
-                <span>GitHub</span>
-              </a>
+            <div
+              className="site-menu"
+              id={menuId}
+              aria-label={t("Действия", "Actions")}
+            >
+              <div className="site-menu__actions">
+                <button
+                  type="button"
+                  className="site-menu__action"
+                  onClick={toggleLang}
+                >
+                  <span className="site-menu__action-badge" aria-hidden>
+                    {lang === "ru" ? "EN" : "RU"}
+                  </span>
+                  <span>{lang === "ru" ? "English" : "Русский"}</span>
+                </button>
+                <button
+                  type="button"
+                  className="site-menu__action"
+                  onClick={toggleTheme}
+                >
+                  {theme === "light" ? (
+                    <Moon
+                      className="site-menu__action-icon"
+                      strokeWidth={2}
+                      aria-hidden
+                    />
+                  ) : (
+                    <Sun
+                      className="site-menu__action-icon"
+                      strokeWidth={2}
+                      aria-hidden
+                    />
+                  )}
+                  <span>
+                    {theme === "light"
+                      ? t("Тёмная тема", "Dark theme")
+                      : t("Светлая тема", "Light theme")}
+                  </span>
+                </button>
+                <a
+                  className="site-menu__action"
+                  href={GITHUB_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <SiGithub
+                    className="site-menu__action-icon"
+                    color="currentColor"
+                    size={18}
+                    title=""
+                    aria-hidden
+                  />
+                  <span>GitHub</span>
+                </a>
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
       </div>
+
+      {menuOpen ? (
+        <button
+          type="button"
+          className="site-menu__backdrop"
+          aria-label={t("Закрыть меню", "Close menu")}
+          onClick={() => setMenuOpen(false)}
+        />
+      ) : null}
     </header>
   );
 }
